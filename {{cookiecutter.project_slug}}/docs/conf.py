@@ -22,7 +22,9 @@ import sys
 sys.path.insert(0, os.path.abspath('..'))
 
 import {{ cookiecutter.project_slug }}
-
+{%- if cookiecutter.use_sphinx_material == 'y' %}
+import sphinx_material
+{%- endif %}
 # -- General configuration ---------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -89,13 +91,53 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
 
+{%- if cookiecutter.use_sphinx_material == 'y' %}
+extensions.append("sphinx_material")
+html_theme_path = sphinx_material.html_theme_path()
+html_context = sphinx_material.get_html_context()
+html_theme = 'sphinx_material'
+# Material theme options (see theme.conf for more information)
+html_theme_options = {
+
+    # Set the name of the project to appear in the navigation.
+    'nav_title': '{{ cookiecutter.project_name }}',
+
+    # Set you GA account ID to enable tracking
+    # 'google_analytics_account': 'UA-XXXXX',
+
+    # Specify a base_url used to generate sitemap.xml. If not
+    # specified, then no sitemap will be built.
+    'base_url': 'https://project.github.io/{{ cookiecutter.github_username }}',
+
+    # Set the color and the accent color
+    'color_primary': 'green',
+    'color_accent': 'light-green',
+
+    # Set the repo location to get a badge with stats
+    'repo_url': 'https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}/',
+    'repo_name': '{{ cookiecutter.project_name }}',
+
+    # Visible levels of the global TOC; -1 means unlimited
+    'globaltoc_depth': 3,
+    # If False, expand all TOC entries
+    'globaltoc_collapse': False,
+    # If True, show hidden TOC entries
+    'globaltoc_includehidden': False,
+    
+
+}
+{%- else %}
+html_theme = 'alabaster'
 # Theme options are theme-specific and customize the look and feel of a
 # theme further.  For a list of options available for each theme, see the
 # documentation.
 #
 # html_theme_options = {}
+
+{%- endif %}
+
+
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

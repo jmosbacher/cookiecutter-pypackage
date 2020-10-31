@@ -52,7 +52,10 @@ pytest = "*"{% endif %}
 sphinx = "*"
 tox = "*"
 yapf = "*"
-
+{% if cookiecutter.use_sphinx_material == 'y' %}
+sphinx-material = {git = "https://github.com/bashtage/sphinx-material.git"}{% endif %}
+{% if cookiecutter.use_nbsphinx == 'y' %}
+nbsphinx = "*"{% endif %}
 {% if cookiecutter.command_line_interface|lower == 'click' -%}
 [tool.poetry.scripts]
 {{ cookiecutter.project_slug }} = '{{ cookiecutter.project_slug }}.cli:main'
